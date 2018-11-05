@@ -53,7 +53,7 @@ class Utilidades
 			}
 
 			if (!feof($fichero)) {
-				echo 'Error: fallo inesperado de fscanf()\n';
+				echo 'Error: fallo inesperado de fscanf()\na';
 			}
 			fclose($fichero);
 		}
@@ -117,7 +117,7 @@ class Utilidades
 			}
 
 			if (!feof($fichero)) {
-				echo 'Error: fallo inesperado de fscanf()\n';
+				echo 'Error: fallo inesperado de fscanf()\ns';
 			}
 			fclose($fichero);
 		}
@@ -142,7 +142,7 @@ class Utilidades
 			}
 
 			if (!feof($fichero)) {
-				echo 'Error: fallo inesperado de fscanf()\n';
+				echo 'Error: fallo inesperado de fscanf()\nd';
 			}
 			fclose($fichero);
 		}
@@ -156,9 +156,7 @@ class Utilidades
 				fwrite($fichero, $aux[$i]);
 			}
 
-			if (!feof($fichero)) {
-				echo 'Error: fallo inesperado de fscanf()\n';
-			}
+
 			fclose($fichero);
 		}
 
@@ -180,7 +178,7 @@ class Utilidades
 			}
 
 			if (!feof($fichero)) {
-				echo 'Error: fallo inesperado de fscanf()\n';
+				echo 'Error: fallo inesperado de fscanf()\ng';
 			}
 			fclose($fichero);
 		}

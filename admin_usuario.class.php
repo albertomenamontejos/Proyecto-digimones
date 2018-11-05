@@ -1,5 +1,5 @@
 <?php
-
+include_once "Utilidades.class.php";
 
 class Usuario{
 	private $nick;
@@ -18,7 +18,7 @@ class Usuario{
 		if($fichero){
 			$encontrado = false;
 			while($usuarioinfo=fscanf($fichero,"%s\n")){
-				$usuario=cadenaurl_a_obj($usuarioinfo[0]);
+				$usuario=Utilidades::cadenaurl_a_obj($usuarioinfo[0]);
 
 				if ($usuario->nick==$new_user->nick) {
 					$encontrado = true;
@@ -36,7 +36,7 @@ class Usuario{
 
 	public function guardar_user($new_user){
 		$fichero=fopen(USUARIOS,"a");
-		$cadena_obj=obj_a_cadenaurl($new_user);
+		$cadena_obj=Utilidades::obj_a_cadenaurl($new_user);
 		if(is_writeable(USUARIOS)){
 			fwrite($fichero,$cadena_obj."\n");
 			$escrito=true;
@@ -59,7 +59,7 @@ public function comprobar_pass($new_user){
 	if($fichero){
 		$encontrado = false;
 		while($usuarioinfo=fscanf($fichero,"%s\n")){
-			$usuario=cadenaurl_a_obj($usuarioinfo[0]);
+			$usuario=Utilidades::cadenaurl_a_obj($usuarioinfo[0]);
 
 			if ($usuario->password==$new_user->password) {
 				$encontrado = true;

@@ -1,5 +1,5 @@
 <?php
-
+ 
 include_once "admin_usuario.class.php";
 
 $nick = "";

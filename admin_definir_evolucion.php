@@ -63,7 +63,7 @@ if (isset($_POST['btn-evolucionado'])) {
 <a href="admin_ver_digimon.php">Ver digimones</a>
 </nav>
 
-<h2>Definir devoluciones</h2>
+<h2>Definir evoluciones</h2>
 <?php 
 
 
