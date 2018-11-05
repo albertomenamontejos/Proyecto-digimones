@@ -1,5 +1,5 @@
 <?php
-include_once "funciones.php";
+
 
 class Usuario{
 	private $nick;

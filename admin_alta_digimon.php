@@ -1,6 +1,7 @@
 <?php
-include_once "funciones.php";
+
 include_once "admin_digimon.class.php";
+include_once "Utilidades.class.php";
 
 $nom_digimon = "";
 $ataque = "";
@@ -15,10 +16,10 @@ if (isset($_POST['btn-alta'])) {
     $defensa = $_POST['defensa'];
     $tipo = $_POST['tipo'];
     $nivel = $_POST['level'];
-    $errores=Digimon::erroresDatos($nom_digimon, $ataque, $defensa);
+    $errores=Utilidades::erroresDatos($nom_digimon, $ataque, $defensa);
     if (empty($errores)) {
         $new_digimon = new Digimon($nom_digimon, $ataque, $defensa, $tipo, $nivel);
-        $new_digimon->guardar_digimon($new_digimon);
+        Utilidades::guardar_digimon($new_digimon);
         $registro_confirmado='<span style="color:green;">Digimon añadido correctamente</span>';
     } else {
         foreach ($errores as $key => $error){
@@ -50,12 +51,12 @@ Nombre<input type="text" name="nom_digimon" id="nom_digimon" value="<?= $nom_dig
 Ataque<input type="number" name="ataque" id="ataque" value="<?= $ataque ?>"><?= $errorAtaque?><br>
 Defensa<input type="number" name="defensa" id="defensa" value="<?= $defensa ?>"><?= $errorDefensa?><br>
 Tipo <select name="tipo" id="tipo">
-  <option value="vacuna">Vacuna</option>
-  <option value="virus">Virus</option>
-  <option value="animal">Animal</option>
-  <option value="planta">Planta</option>
-  <option value="elemental">Elemental</option>
-</select> <br>
+        <option value="vacuna">Vacuna</option>
+        <option value="virus">Virus</option>
+        <option value="animal">Animal</option>
+        <option value="planta">Planta</option>
+        <option value="elemental">Elemental</option>
+    </select> <br>
 Nivel:<select name="level" id="level">
 <option value="1">1</option>
 <option value="2">2</option>

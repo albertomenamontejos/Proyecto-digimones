@@ -1,5 +1,5 @@
 <?php
-include_once "funciones.php";
+include_once "Utilidades.class.php";
 include_once "admin_digimon.class.php";
 
 $digimon_cad="";
@@ -9,11 +9,11 @@ $solucion_subida['foto-derrota']="";
 
 if (isset($_GET['digimon_cad'])) {
 	//Viene de la pagina admin_ver_digimon.php de pulsar en el boton modificar/Añadir Imagen
-	$digimon = cadenaurl_a_obj($_GET['digimon_cad']);
-	$digimon_cad=obj_a_cadenaurl($digimon);
+	$digimon = Utilidades::cadenaurl_a_obj($_GET['digimon_cad']);
+	$digimon_cad=Utilidades::obj_a_cadenaurl($digimon);
 }else if (isset($_POST['subir-fotos'])){
-	$digimon = cadenaurl_a_obj($_POST['digimon_cad']);
-	$digimon_cad=obj_a_cadenaurl($digimon);
+	$digimon = Utilidades::cadenaurl_a_obj($_POST['digimon_cad']);
+	$digimon_cad=Utilidades::obj_a_cadenaurl($digimon);
 	$solucion_subida=array();
 	foreach($_FILES as $key => $valor){
 		if($_FILES[$key]['name']!=''){
@@ -28,7 +28,7 @@ if (isset($_GET['digimon_cad'])) {
 				if($key=='foto-principal')$digimon->setImagen($destino);
 				else if($key=='foto-victoria')$digimon->setImagenVictoria($destino);
 				else if ($key=='foto-derrota')$digimon->setImagenDerrota($destino);
-				Digimon::sobreescribir_digimon($digimon);
+				Utilidades::sobreescribir_digimon($digimon);
 			}else{
 				$solucion_subida[$key]= "<span style='color:red;'>Ocurrio un error, no se ha podido subir el archivo.</span>";
 			}		
@@ -40,7 +40,7 @@ if (isset($_GET['digimon_cad'])) {
 				if($key=='foto-principal')$digimon->setImagen($destino);
 				else if($key=='foto-victoria')$digimon->setImagenVictoria($destino);
 				else if ($key=='foto-derrota')$digimon->setImagenDerrota($destino);
-				Digimon::sobreescribir_digimon($digimon);
+				Utilidades::sobreescribir_digimon($digimon);
 			}else{
 				$solucion_subida[$key]= "<span style='color:red;'>Ocurrio un error, no se ha podido subir el archivo.</span>";
 			}		

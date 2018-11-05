@@ -1,6 +1,6 @@
 
 <?php
-include_once "funciones.php";
+include_once "Utilidades.class.php";
 include_once "admin_digimon.class.php";
 
 ?>
@@ -43,9 +43,9 @@ include_once "admin_digimon.class.php";
 	<div class="caja-digimon">
 
 		<?php
-	$digimones_nivel1 = Digimon::listar_digimones(1);
+	$digimones_nivel1 = Utilidades::listar_digimones(1);
 	for ($i = 0; $i < count($digimones_nivel1); $i++) {
-		$digimon_cad = obj_a_cadenaurl($digimones_nivel1[$i]);
+		$digimon_cad = Utilidades::obj_a_cadenaurl($digimones_nivel1[$i]);
 		if ($digimones_nivel1[$i]->getEvolucion() == null) {
 			$evolucion = "<span style='color:blue;'> No definida </span>";
 		} else {
@@ -71,9 +71,9 @@ include_once "admin_digimon.class.php";
 	<h3>Digimons nivel 2</h3>
 	<div class="caja-digimon">
 	<?php
-	$digimones_nivel2 = Digimon::listar_digimones(2);
+	$digimones_nivel2 = Utilidades::listar_digimones(2);
 	for ($i = 0; $i < count($digimones_nivel2); $i++) {
-		$digimon_cad = obj_a_cadenaurl($digimones_nivel2[$i]);
+		$digimon_cad = Utilidades::obj_a_cadenaurl($digimones_nivel2[$i]);
 		if ($digimones_nivel2[$i]->getEvolucion() == null) {
 			$evolucion = "<span style='color:blue;'> No definida </span>";
 		} else {
@@ -98,9 +98,9 @@ include_once "admin_digimon.class.php";
 	
 <div class="caja-digimon">
 <?php
-$digimones_nivel3 = Digimon::listar_digimones(3);
+$digimones_nivel3 = Utilidades::listar_digimones(3);
 for ($i = 0; $i < count($digimones_nivel3); $i++) {
-	$digimon_cad = obj_a_cadenaurl($digimones_nivel3[$i]);
+	$digimon_cad = Utilidades::obj_a_cadenaurl($digimones_nivel3[$i]);
 
 	echo "<table border ='1'>";
 	echo "<tr>

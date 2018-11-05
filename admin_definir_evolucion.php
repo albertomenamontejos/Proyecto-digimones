@@ -1,5 +1,5 @@
 <?php
-include_once "funciones.php";
+include_once "Utilidades.class.php";
 include_once "admin_digimon.class.php";
 
 $nom_digimon = "";
@@ -9,20 +9,20 @@ $errorNombre = "";
 $errorAtaque = "";
 $errorDefensa = "";
 $registro_confirmado = "";
-$array_digimones_nivel1 = Digimon::digimones_evolucionables(1);
-$array_digimones_nivel2 = Digimon::digimones_evolucionables(2);
+$array_digimones_nivel1 = Utilidades::digimones_evolucionables(1);
+$array_digimones_nivel2 = Utilidades::digimones_evolucionables(2);
 $view_caja_evolucion=false;
 if (isset($_POST['btn-evolucionado'])) {
-    $digimon_original = Digimon::buscar_digimon($_POST['digimones']);
+    $digimon_original = Utilidades::buscar_digimon($_POST['digimones']);
     $digimon_original->setEvolucion($_POST['nombreEvolucion']);
-    Digimon::sobreescribir_digimon($digimon_original);
-    $errores = Digimon::erroresDatos($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion']);
+    Utilidades::sobreescribir_digimon($digimon_original);
+    $errores = Utilidades::erroresDatos($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion']);
     if (empty($errores)) {
         $new_digimon = new Digimon($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion'], $_POST['tipoEvolucion'], $_POST['nivelEvolucion']);
-        $new_digimon->guardar_digimon($new_digimon);
+        Utilidades::guardar_digimon($new_digimon);
         $registro_confirmado = '<span style="color:green;">Digimon añadido correctamente</span>';
-        $array_digimones_nivel1 = Digimon::digimones_evolucionables(1);
-        $array_digimones_nivel2 = Digimon::digimones_evolucionables(2);
+        $array_digimones_nivel1 = Utilidades::digimones_evolucionables(1);
+        $array_digimones_nivel2 = Utilidades::digimones_evolucionables(2);
         $view_caja_evolucion=false;
     } else {
         $view_caja_evolucion=true;
@@ -108,7 +108,7 @@ if (empty($array_digimones_nivel2)) {
 <?php 
 }
 if ($view_caja_evolucion) {
-    $digimon_original = Digimon::buscar_digimon($_POST['digimones']);
+    $digimon_original = Utilidades::buscar_digimon($_POST['digimones']);
     ?>
 <h4>Digimon original: </h4>
 <img class='imagen-info' src="<?= $digimon_original->getImagen() ?>" alt="">
