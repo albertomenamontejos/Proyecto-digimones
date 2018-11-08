@@ -1,6 +1,7 @@
 <?php
-include_once "Utilidades.class.php";
-include_once "admin_digimon.class.php";
+require_once "clases/Utilidades.class.php";
+require_once "clases/Utilidades_dig.class.php";
+require_once "clases/Digimon.class.php";
 
 $nom_digimon = "";
 $ataque = "";
@@ -9,20 +10,20 @@ $errorNombre = "";
 $errorAtaque = "";
 $errorDefensa = "";
 $registro_confirmado = "";
-$array_digimones_nivel1 = Utilidades::digimones_evolucionables(1);
-$array_digimones_nivel2 = Utilidades::digimones_evolucionables(2);
+$array_digimones_nivel1 = Utilidades_dig::digimones_evolucionables(1);
+$array_digimones_nivel2 = Utilidades_dig::digimones_evolucionables(2);
 $view_caja_evolucion=false;
 if (isset($_POST['btn-evolucionado'])) {
-    $digimon_original = Utilidades::buscar_digimon($_POST['digimones']);
+    $digimon_original = Utilidades_dig::buscar($_POST['digimones'],DIGIMONES);
     $digimon_original->setEvolucion($_POST['nombreEvolucion']);
-    Utilidades::sobreescribir_digimon($digimon_original);
-    $errores = Utilidades::erroresDatos($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion']);
+    Utilidades_dig::sobreescribir($digimon_original,DIGIMONES);
+    $errores = Utilidades_dig::erroresDatos($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion']);
     if (empty($errores)) {
         $new_digimon = new Digimon($_POST['nombreEvolucion'], $_POST['ataqueEvolucion'], $_POST['defensaEvolucion'], $_POST['tipoEvolucion'], $_POST['nivelEvolucion']);
-        Utilidades::guardar_digimon($new_digimon);
+        Utilidades_dig::guardar($new_digimon,DIGIMONES,DIGIMONESDIR);
         $registro_confirmado = '<span style="color:green;">Digimon añadido correctamente</span>';
-        $array_digimones_nivel1 = Utilidades::digimones_evolucionables(1);
-        $array_digimones_nivel2 = Utilidades::digimones_evolucionables(2);
+        $array_digimones_nivel1 = Utilidades_dig::digimones_evolucionables(1);
+        $array_digimones_nivel2 = Utilidades_dig::digimones_evolucionables(2);
         $view_caja_evolucion=false;
     } else {
         $view_caja_evolucion=true;
@@ -108,7 +109,7 @@ if (empty($array_digimones_nivel2)) {
 <?php 
 }
 if ($view_caja_evolucion) {
-    $digimon_original = Utilidades::buscar_digimon($_POST['digimones']);
+    $digimon_original = Utilidades_dig::buscar($_POST['digimones'],DIGIMONES);
     ?>
 <h4>Digimon original: </h4>
 <img class='imagen-info' src="<?= $digimon_original->getImagen() ?>" alt="">

@@ -1,21 +1,22 @@
 <?php
-require "admin_usuario.class.php";
+require_once "clases/Utilidades.class.php";
+require_once "clases/Utilidades_user.class.php";
+
+
 $errorUsuario="";
 $errorPass="";
 if(isset($_POST['btn-enviar'])){
-    $usuario=new Usuario($_POST['nick'],$_POST['password']);
-    if($usuario->existe_user($usuario)){  
-        if($usuario->comprobar_pass($usuario)){
-            header("Location: inicio_usuario.php");
+   $nick=$_POST['nick'];
+   $pass=$_POST['password'];
+    if(Utilidades_user::existe($nick)){  
+        if(Utilidades_user::comprobar_pass($pass)){
+            header("Location: inicio_usuario.php?nick=$nick");
         }else{
             $errorPass="<span style='color:red'>Contraseña inválida</span>";
         }
     }else{
         $errorUsuario="<span style='color:red'>No se ha encontrado ningun usuario con ese nick.</span>";
     }
-
-
-
 }
 
 ?>

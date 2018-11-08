@@ -1,6 +1,7 @@
 <?php
-include_once "Utilidades.class.php";
-include_once "admin_digimon.class.php";
+include_once "clases/Utilidades.class.php";
+include_once "clases/Utilidades_dig.class.php";
+include_once "clases/Digimon.class.php";
 
 $digimon_cad="";
 $solucion_subida['foto-principal']="";
@@ -17,22 +18,32 @@ if (isset($_GET['digimon_cad'])) {
 	$solucion_subida=array();
 	foreach($_FILES as $key => $valor){
 		if($_FILES[$key]['name']!=''){
+			//Se cambia el nombre de la foto por si desea identificar la foto por el nombre
+			//no es necesario ya que se guarda dentro de cada objeto.
 			$ruta_temporal=$_FILES[$key]['tmp_name'];
 			$posicionPunto=strpos($_FILES[$key]['name'],".");
 			$extension=substr($_FILES[$key]['name'],$posicionPunto,strlen($_FILES[$key]['name']));
 			$nombreFoto=$key.$extension;
-			$destino= DIGIMONESDIR.$digimon->getNombre()."/".$nombreFoto;
-			if(move_uploaded_file($ruta_temporal,$destino)){
-				$solucion_subida[$key]= "<span style='color:green;'>Archivo subidos con exito.</span>";
-				//Establecer la imagen al objeto
-				if($key=='foto-principal')$digimon->setImagen($destino);
-				else if($key=='foto-victoria')$digimon->setImagenVictoria($destino);
-				else if ($key=='foto-derrota')$digimon->setImagenDerrota($destino);
-				Utilidades::sobreescribir_digimon($digimon);
+			//Se controla que el archivo subido sea una imagen
+			$array_extensiones=array(".jpeg",".jpg",".gif",".png",".raw",".BMP",".psd");
+			if(in_array($extension,$array_extensiones)){
+				$destino= DIGIMONESDIR.$digimon->getNombre()."/".$nombreFoto;
+				if(move_uploaded_file($ruta_temporal,$destino)){
+					$solucion_subida[$key]= "<span style='color:green;'>Archivo subidos con exito.</span>";
+					//Establecer la imagen al objeto
+					if($key=='foto-principal')$digimon->setImagen($destino);
+					else if($key=='foto-victoria')$digimon->setImagenVictoria($destino);
+					else if ($key=='foto-derrota')$digimon->setImagenDerrota($destino);
+					Utilidades_dig::sobreescribir($digimon);
+				}else{
+					$solucion_subida[$key]= "<span style='color:red;'>Ocurrio un error, no se ha podido subir el archivo.</span>";
+				}
 			}else{
-				$solucion_subida[$key]= "<span style='color:red;'>Ocurrio un error, no se ha podido subir el archivo.</span>";
-			}		
+				$solucion_subida[$key]= "<span style='color:red;'>Extension no admitida.</span>";
+			}
+					
 		}else{
+			//Si no se ha subido ninguna imagen se pone una por defecto.
 			$img_defecto="img/porDefecto.png";
 			$destino= DIGIMONESDIR.$digimon->getNombre()."/".$key.".png";
 			if(copy($img_defecto,$destino)){
@@ -40,7 +51,7 @@ if (isset($_GET['digimon_cad'])) {
 				if($key=='foto-principal')$digimon->setImagen($destino);
 				else if($key=='foto-victoria')$digimon->setImagenVictoria($destino);
 				else if ($key=='foto-derrota')$digimon->setImagenDerrota($destino);
-				Utilidades::sobreescribir_digimon($digimon);
+				Utilidades_dig::sobreescribir($digimon);
 			}else{
 				$solucion_subida[$key]= "<span style='color:red;'>Ocurrio un error, no se ha podido subir el archivo.</span>";
 			}		

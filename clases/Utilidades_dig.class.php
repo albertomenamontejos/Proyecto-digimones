@@ -1,46 +1,15 @@
 <?php
-//VARIABLES
-define('USUARIOS', "usuarios.txt");
-define('DIGIMONES', "digimones.txt");
-define('USERDIR', "usuarios/");
-define('DIGIMONESDIR', "digimones/");
+require_once "clases/Utilidades.class.php";
 
-class Utilidades
+class Utilidades_dig
 {
 
-//Funcion para transformar un array en cadena.
-	function obj_a_cadenaurl($obj)
-	{
-        //Primero Transformamos el array en una cadena de texto
-		$cadenatmp = serialize($obj);
-        //Codificamos dicha cadena en formato URL para enviar correctamente
-        // los caracteres especiales
-		$cadena = urlencode($cadenatmp); 
-        //devolvemos la cadena codificada
-		return $cadena;
-	} 
-
-//Funcion para transformar una cadena en un array.
-	function cadenaurl_a_obj($texto)
-	{ 
-        // Esto lo hacemos por si está vacía la cadena no me cree un array 
-        // con una posición vacía
-		$obj = new stdClass();
-		if ($texto != "") { 
-        // Antes de descodificar hay que quitar cualquier \ contrabarra     
-			$texto = stripslashes($texto); 
-        // Decodifico de formato URL a texto plano
-			$texto = urldecode($texto); 
-        // Ahora a partir de la cadena genero un array
-			$obj = unserialize($texto);
-		}
-		return $obj;
-	}
-
-	public  function buscar_digimon($nom_digimon)
+//Buscar por nombre un digimon en un fichero especifico 
+//Se usa en la parte de administrador como en la parte del usuario
+	public static function buscar($nom_digimon, $fichero)
 	{
 
-		$fichero = fopen(DIGIMONES, "r");
+		$fichero = fopen($fichero, "r");
 
 		if ($fichero) {
 			$encontrado = false;
@@ -61,31 +30,34 @@ class Utilidades
 		return $encontrado;
 	}
 
-	public function guardar_digimon($new_digimon)
+
+//Se guarda un digimon ya sea en la zona de administracion o en la cuenta del usuario,
+//especificandolo por los paramentros
+	public static function guardar($new_digimon, $ruta_fichero, $ruta_directorio)
 	{
-		$fichero = fopen(DIGIMONES, "a");
+		$fichero = fopen($ruta_fichero, "a");
 
 		$cadena_obj = Utilidades::obj_a_cadenaurl($new_digimon);
-		if (is_writeable(DIGIMONES)) {
-			fwrite($fichero, $cadena_obj . "\n");
+		if (fwrite($fichero, $cadena_obj . "\n")) {
 			$escrito = true;
 		} else {
 			$escrito = false;
 		}
 
-		if ($escrito) mkdir(DIGIMONESDIR . $new_digimon->getNombre());
+		if ($escrito) @mkdir($ruta_directorio . $new_digimon->getNombre());
 
 		fclose($fichero);
 		return $escrito;
 	}
 
-	public  function erroresDatos($nom_digimon, $ataque, $defensa)
+//Controla errores que ha introducido el usuario o administrador
+	public static function erroresDatos($nom_digimon, $ataque, $defensa)
 	{
 		$errores = array();
 		if (strlen($nom_digimon) <= 1) {
 			$errorNombre = '<span style="color:red;">El nombre del digimon tiene que tener mas de 1 caracteres.</span>';
 			$errores['errorNombre'] = $errorNombre;
-		} else if (Utilidades::buscar_digimon($nom_digimon)) {
+		} else if (Utilidades_dig::buscar($nom_digimon, DIGIMONES)) {
 			$errorNombre = '<span style="color:red;">El digimon ya exite.</span>';
 			$errores['errorNombre'] = $errorNombre;
 		}
@@ -101,7 +73,8 @@ class Utilidades
 
 	}
 
-	public  function digimones_evolucionables($nivel)
+//Determinar que digimon puede ser evolucionado segun el nivel pasado por parametro
+	public static function digimones_evolucionables($nivel)
 	{
 
 		$fichero = fopen(DIGIMONES, "r");
@@ -123,11 +96,12 @@ class Utilidades
 		}
 		return $digimones;
 	}
-
-	public function sobreescribir_digimon($digimon_original)
+//Borra el fichero DIGIMONES(parte administracion) y escribe 
+//el mismo fichero cambiando solo el digimon pasado por parametro.
+	public static function sobreescribir($digimon_original,$ruta,$eliminar=false)
 	{
 
-		$fichero = fopen(DIGIMONES, "r");
+		$fichero = fopen($ruta, "r");
 		$aux = array();
 		if ($fichero) {
 
@@ -135,8 +109,10 @@ class Utilidades
 				$digimon = Utilidades::cadenaurl_a_obj($digimoninfo[0]);
 
 				if ($digimon->getNombre() == $digimon_original->getNombre()) {
+					if(!$eliminar)
 					$aux[] = Utilidades::obj_a_cadenaurl($digimon_original) . "\n";
 				} else {
+					
 					$aux[] = Utilidades::obj_a_cadenaurl($digimon) . "\n";
 				}
 			}
@@ -147,9 +123,9 @@ class Utilidades
 			fclose($fichero);
 		}
 
-		unlink(DIGIMONES);
+		unlink($ruta);
 
-		$fichero = fopen(DIGIMONES, "a");
+		$fichero = fopen($ruta, "a");
 		if ($fichero) {
 
 			for ($i = 0; $i < count($aux); $i++) {
@@ -161,11 +137,13 @@ class Utilidades
 		}
 
 	}
-
-	public function listar_digimones($nivel)
+//Funcion que devuelve un array de digimones segun el nivel pasado por parametro
+//El parametro de el nivel es opcional, si no pasa un nivel devolvera todos los digimones
+//Busca los digimones en el fichero pasado por parametro (Funciona para parte administrador y usuario)
+	public static function listar($ruta_fichero, $nivel = null)
 	{
 
-		$fichero = fopen(DIGIMONES, "r");
+		$fichero = fopen($ruta_fichero, "r");
 		$digimones = array();
 		if ($fichero) {
 			$encontrado = false;
@@ -173,8 +151,10 @@ class Utilidades
 				$digimon = Utilidades::cadenaurl_a_obj($digimoninfo[0]);
 
 				if ($digimon->getNivel() == $nivel) {
-					$digimones[] = $digimon;
+					$digimones_nivel[] = $digimon;
 				}
+				$digimones[] = $digimon;
+
 			}
 
 			if (!feof($fichero)) {
@@ -182,7 +162,56 @@ class Utilidades
 			}
 			fclose($fichero);
 		}
-		return $digimones;
+		if ($nivel == null) return $digimones;
+		else return $digimones_nivel;
 
 	}
+
+//Cuenta los digimones de un fichero especificado por parámetro.
+	public static function contar_dig($ruta_fichero){
+
+		@$fichero = fopen($ruta_fichero, "r");
+		$contador=0;
+		if ($fichero) {
+			
+			while ($digimoninfo = fscanf($fichero, "%s\n")) {
+			$contador++;
+			}
+	
+			if (!feof($fichero)) {
+				echo 'Error: fallo inesperado de fscanf()\na';
+			}
+			fclose($fichero);
+		}
+	
+		return $contador;
+	}
+
+	
+public static function leer_equipo($txt_equipo)
+{
+	$array_equipo = array();
+	$array_equipo[0] = null;
+	$array_equipo[1] = null;
+	$array_equipo[2] = null;
+
+	$fichero = fopen($txt_equipo, "r");
+	if ($fichero) {
+		$i = 0;
+		while ($digimoninfo = fscanf($fichero, "%s\n")) {
+			$digimon = Utilidades::cadenaurl_a_obj($digimoninfo[0]);
+			$array_equipo[$i] = $digimon;
+			$i++;
+		}
+
+		if (!feof($fichero)) {
+			echo 'Error: fallo inesperado de fscanf()\na';
+		}
+		fclose($fichero);
+	}
+
+	return $array_equipo;
+}
+
+
 }

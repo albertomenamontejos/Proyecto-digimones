@@ -1,7 +1,10 @@
 <?php
 
-include_once "admin_digimon.class.php";
-include_once "Utilidades.class.php";
+require_once "clases/Utilidades.class.php";
+require_once "clases/Digimon.class.php";
+require_once "clases/Utilidades_dig.class.php";
+
+
 
 $nom_digimon = "";
 $ataque = "";
@@ -16,10 +19,10 @@ if (isset($_POST['btn-alta'])) {
     $defensa = $_POST['defensa'];
     $tipo = $_POST['tipo'];
     $nivel = $_POST['level'];
-    $errores=Utilidades::erroresDatos($nom_digimon, $ataque, $defensa);
+    $errores=Utilidades_dig::erroresDatos($nom_digimon, $ataque, $defensa);
     if (empty($errores)) {
         $new_digimon = new Digimon($nom_digimon, $ataque, $defensa, $tipo, $nivel);
-        Utilidades::guardar_digimon($new_digimon);
+        Utilidades_dig::guardar($new_digimon,DIGIMONES,DIGIMONESDIR);
         $registro_confirmado='<span style="color:green;">Digimon añadido correctamente</span>';
     } else {
         foreach ($errores as $key => $error){

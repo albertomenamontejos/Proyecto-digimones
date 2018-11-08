@@ -1,6 +1,7 @@
 <?php
  
-include_once "admin_usuario.class.php";
+require_once "clases/Usuario.class.php";
+require_once "clases/Utilidades_user.class.php";
 
 $nick = "";
 $errorNick="";
@@ -17,14 +18,21 @@ if (isset($_POST['btn_alta'])) {
     } else if (strlen($nick) <= 3) {
         $errorNick= '<span style="color:red;">El nick tiene que tener mas de 3 caracteres.</span>';
     } else {
-        $new_user= new Usuario($nick,$password);
+        
+
         //Comprobar si el nick ya existe
-   
-        if($new_user->existe_user($new_user)){
+        if(Utilidades_user::existe($nick)){
             $errorNick='<span style="color:red;">Este nick ya existe.</span>';
         }else{ 
-            $new_user->guardar_user($new_user);   
-           $registro_confirmado='<span style="color:green;">Usuario registrado correctamente.</span>';
+            $new_user= new Usuario($nick,$password);
+           
+            //Comprobar que existan suficientes digimones para asignar al usuario
+            if(Utilidades_user::asignarDigimones($new_user)){
+                $registro_confirmado='<span style="color:green;">Usuario registrado correctamente.</span>';
+            }else{
+                $registro_confirmado='<span style="color:red;">No se puede crear el usuario porque no hay suficientes Digimones.</span>';
+
+            }
         }
     }
 } 

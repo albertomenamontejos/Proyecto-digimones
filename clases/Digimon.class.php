@@ -9,8 +9,8 @@ class Digimon
 	private $nivel;
 	private $evolucion = null;
 	private $imagen="img/porDefecto.png";
-	private $imagenVictoria;
-	private $imagenDerrota;
+	private $imagenVictoria="img/porDefecto.png";
+	private $imagenDerrota="img/porDefecto.png";
 
 	public function __construct($nombre, $ataque, $defensa, $tipo, $nivel)
 	{

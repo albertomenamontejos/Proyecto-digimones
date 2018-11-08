@@ -1,3 +1,15 @@
+<?php
+require_once "clases/Utilidades.class.php";
+require_once "clases/Utilidades_user.class.php";
+require_once "clases/Usuario.class.php";
+
+if(isset($_GET['nick'])){
+$nick=$_GET['nick'];
+$usuario=Utilidades_user::existe($nick);
+$usuario_cad=Utilidades::obj_a_cadenaurl($usuario);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -8,36 +20,20 @@
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<title>Document</title>
 	<style>
-
+	.logo{
+		width:100px;
+		height:100px;
+	}
 	</style>
 </head>
 
 <body>
-
-				
-					
+		
 					
 	<div class="container-fluid p-0">
-		<div class="row">
-			<div class="col-12 ">
-				<nav class="navbar navbar-dark bg-dark text-white">
-					<img src="img/logo.jpg" alt="">
-					<a class="navbar-brand" href="ver_mis_digimon.php">Ver mis digimon</a>			
-					<a class="navbar-brand" href="organizar_equipo.php">Organizar equipo</a>			
-					<a class="navbar-brand" href="jugar_partida.php">Jugar partida</a>		
-					<a class="navbar-brand" href="digievolucionar.php">Digievolucionar</a>
-				</nav>
-			</div>
-		</div>
-	</div>
 
+	<?=Utilidades::menu($usuario)?>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-12 ">
-
-			</div>
-		</div>
 	</div>
 
 
