@@ -3,58 +3,53 @@ require_once "clases/Utilidades.class.php";
 require_once "clases/Utilidades_user.class.php";
 
 
-$errorUsuario="";
-$errorPass="";
-if(isset($_POST['btn-enviar'])){
-   $nick=$_POST['nick'];
-   $pass=$_POST['password'];
-    if(Utilidades_user::existe($nick)){  
-        if(Utilidades_user::comprobar_pass($pass)){
-            header("Location: inicio_usuario.php?nick=$nick");
-        }else{
-            $errorPass="<span style='color:red'>Contraseña inválida</span>";
-        }
-    }else{
-        $errorUsuario="<span style='color:red'>No se ha encontrado ningun usuario con ese nick.</span>";
-    }
+$errorUsuario = "";
+$errorPass = "";
+if (isset($_GET['errorUsuario'])) {
+	$errorUsuario = $_GET['errorUsuario'];
+} else if (isset($_GET['errorPass'])) {
+	$errorPass = $_GET['errorPass'];
 }
 
 ?>
 <!DOCTYPE html>
-<html lang="es">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<title>Document</title>
-	<style>
-	.row >div{
-		background: #ccc;
-	
-	}
-	</style>
-</head>
 
-<body>
+
+<html>
+  <head>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="css/user-style.css">
+  </head>
+<body class="login">
 	<div class="container">
-		<div class="row">
-			<div class="col-12 ">
-                <form action="index.php" method="post">
-                    <label for="usuario">Introduzca su usuario: <input type="text" name="nick" id="nick"></label><?=$errorUsuario?>
-                    <label for="pass">Introduzca su contraseña: <input type="password" name="password" id="password"></label><?=$errorPass?>
-                    <input type="submit" class="btn btn-primary" name="btn-enviar" value="Entrar">
-                </form>
+	
+			<div class="row d-flex flex-column justify-content-center align-content-center  " style="min-height:500px;">
+			<h1 class="text-center mb-5 text-white" >DIGIMONES</h1>
+			<div class="col-5">
+			<form id="Login" action="inicio_usuario.php" method="post">
+				<p class="text-center text-white">Por favor introduzca su usuario y contraseña</p>
+					<div class="form-group m-3 p-2">
 
+						<input type="text" class="form-control" name="nick"   placeholder="Introduzca su usuario"><?= $errorUsuario ?>
+					</div>
+					<div class="form-group m-3 p-2">
+						<input type="password" class="form-control" name="password" placeholder="Introduzca su contraseña"> <?= $errorPass ?>
+					</div>
+					<div class="form-group text-center">
+					<input type="submit" class="btn btn-warning w-50 " name="btn-enviar" value="Entrar">
+					</div>
+				</form>
+
+			
+			</div>
+				
+			
 			</div>
 		</div>
 	</div>
 
-
-	<script src="js/bootstrap.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/jquery-3.3.1.min.js"></script>
-	
 </body>
 </html>

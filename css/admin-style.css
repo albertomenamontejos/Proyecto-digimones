@@ -1,0 +1,25 @@
+
+.d-inline{
+	display:inline;
+}
+.imagen-info{
+	height:200px;
+	cursor:pointer;
+}
+
+.imagenes{
+	overflow:hidden;
+}
+
+.img-tabla{
+	height:200px;
+
+}
+.imagen{
+	text-align:center;
+}
+
+.caja-digimon{
+	display:flex;
+	flex-flow: row wrap;
+}

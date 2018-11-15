@@ -1,0 +1,57 @@
+/* LOGIN USUARIO */
+
+.login{
+	background:url(../img/bg-login.png);
+	background-size: cover;
+	background-image:  no-repeat;
+}
+
+/* menu */
+.logo{
+	width:100px;
+	height:100px;
+}
+.bg-menu{
+background: #0580bb;	
+}
+
+/* ver mis digimon */
+.img-tabla{
+	height:200px;
+
+}
+
+.ver-mis-digimon{
+background: #f8f8f8;
+}
+
+/* Jugar partida */
+
+.cajas{
+	display:flex;
+	flex-flow: row wrap;
+}
+
+.logo{
+	width:100px;
+	height:100px;
+}
+.bg-imagen{
+	background-image:url(../img/imagenVS.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	 background-position: 45% 50%;
+}
+.capa1{
+	background: rgba(0,0,0,.4);
+}
+
+.gana{
+	border:5px solid greenyellow;
+}
+.pierde{
+	border:5px solid red;
+}
+.empate{
+	border:5px solid orange;
+}

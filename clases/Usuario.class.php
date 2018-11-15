@@ -9,6 +9,7 @@ class Usuario
 	private $directorio_usuario;
 	private $txt_dig_usuario;
 	private $txt_equipo_usuario;
+	private $txt_registro;
 	
 	function __construct($nick, $password)
 	{
@@ -17,6 +18,7 @@ class Usuario
 		$this->directorio_usuario="usuarios/$nick/";
 		$this->txt_dig_usuario = "usuarios/$nick/digimones-usuario.txt";
 		$this->txt_equipo_usuario="usuarios/$nick/equipo-usuario.txt";
+		$this->txt_registro="usuarios/$nick/registro-partidas.txt";
 	}
 
 	public function getNick()
@@ -59,6 +61,12 @@ class Usuario
 	public function getDirectorio_usuario()
 	{
 		return $this->directorio_usuario;
+	}
+
+
+	public function getTxt_registro()
+	{
+		return $this->txt_registro;
 	}
 }
 ?>
