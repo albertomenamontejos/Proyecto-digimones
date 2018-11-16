@@ -86,7 +86,7 @@ if (isset($_POST['btn-evolucionado'])) { //VIENE DE CREAR UN NUEVO DIGIMON
   <div class="collapse navbar-collapse   ml-5" id="navbarText">
     <ul class="navbar-nav mr-auto ml-5">
       <li class="nav-item text-center ml-5">
-        <a class="nav-link" href="admin_alta_usuario.php"><i class="nav-link fas fa-home  d-block mb-1"></i>Inicio<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="admin.php"><i class="nav-link fas fa-home  d-block mb-1"></i>Inicio<span class="sr-only">(current)</span></a>
       </li>
     <ul class="navbar-nav mr-auto ">
       <li class="nav-item text-center">
